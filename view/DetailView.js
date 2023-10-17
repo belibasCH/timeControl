@@ -1,10 +1,11 @@
 
-const DetailView = (todoController, detailElement) => {
+const DetailView = (timeInputController, detailElement) => {
 
     const render = () =>
-        detailElement.innerText = "" + todoController.getDuration();
+        console.log(timeInputController.getDuration());
+        detailElement.innerText = "" + timeInputController.getDuration().toString();
 
-    todoController.onStartChanged(render);
-    todoController.onDurationChanged(render);
+    timeInputController.onStartChanged(render);
+    timeInputController.onDurationChanged(render);
 };
 

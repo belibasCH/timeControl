@@ -12,6 +12,7 @@
 
     <svg id="wheel"></svg>
     <p id="details"></p>
+    <input type="number" id="timeInput" onchange="timeInputController.setDuration(event.target.value);">
 
 </main>
 
@@ -20,13 +21,16 @@
 <script src="../timeInput/timeInputController.js"></script>
 <script src="DetailView.js"></script>
 <script src="WheelView.js"></script>
-<script>
-    const todoController = TimeInputController();
+<script src="../States/ControlStates.js"></script>
 
-    WheelView(todoController, document.getElementById('wheel'));
-    DetailView(todoController, document.getElementById('details'));
+<script>
+    const timeInputController = TimeInputController();
+
+    WheelView(timeInputController, document.getElementById('wheel'));
+    DetailView(timeInputController, document.getElementById('details'));
 
 </script>
+
 
 </body>
 
