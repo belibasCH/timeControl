@@ -13,9 +13,9 @@ body {
 }
 
 .stroke-animation {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: stroke 3s ease-out;
+    stroke-dasharray: 700;
+    stroke-dashoffset: 700;
+    animation: stroke 2s ease-out;
 }
 
 @keyframes stroke {

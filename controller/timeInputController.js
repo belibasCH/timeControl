@@ -2,7 +2,7 @@
 
 const TimeInputController = () => {
 
-    const duration = Observable(0);
+    const duration = Observable(30);
     const start = Observable(0);
 
     const calculateEnd = () => start.getValue() + duration.getValue();

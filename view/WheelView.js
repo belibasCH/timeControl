@@ -47,11 +47,10 @@ const WheelView = (timeInputController, controlSVG) => {
     circleAnimation.setAttribute("cx", `${size / 2}`);
     circleAnimation.setAttribute("cy", `${size / 2}`);
     circleAnimation.setAttribute("r", "80");
-    circleAnimation.setAttribute("stroke", "rgba(250,250,250,0.5)");
+    circleAnimation.setAttribute("stroke", "rgba(250,0,0,0.5)");
     circleAnimation.setAttribute("fill", "none");
     circleAnimation.setAttribute("stroke-width", "4");
     circleAnimation.setAttribute("class", "stroke-animation");
-
 
     controlSVG.appendChild(circleAnimation);
     const startRotation = (event) => {
