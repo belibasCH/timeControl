@@ -16,25 +16,11 @@ class UntenLinks extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  startDragPointX - event.offsetX;
-        this.yVersch =  event.offsetY - startDragPointY;
+        this.xVersch =  startDragPointX - event.clientX;
+        this.yVersch =  startDragPointY - event.clientY;
         return this.yVersch+this.xVersch/3;
     }
 }
-
-class UntenRechts extends RotationState{
-
-    constructor() {
-        super()
-    }
-
-    rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  startDragPointX - event.offsetX;
-        this.yVersch =  startDragPointY - event.offsetY;
-        return this.yVersch+this.xVersch/3;
-    }
-}
-
 class ObenRechts extends RotationState{
 
     constructor() {
@@ -42,11 +28,27 @@ class ObenRechts extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  event.offsetX - startDragPointX;
-        this.yVersch =  startDragPointY - event.offsetY;
+        this.xVersch =  event.clientX - startDragPointX;
+        this.yVersch =  event.clientY - startDragPointY;
+        // console.log("eventx:"+event.clientX+ " - startx: "+ startDragPointX);
+        // console.log("x: "+this.xVersch);
         return this.yVersch+this.xVersch/3;
     }
 }
+class UntenRechts extends RotationState{
+
+    constructor() {
+        super()
+    }
+
+    rotate(event, startDragPointX, startDragPointY) {
+        this.xVersch =  startDragPointX - event.clientX;
+        this.yVersch =  event.clientY - startDragPointY;
+        return this.yVersch+this.xVersch/3;
+    }
+}
+
+
 class ObenLinks extends RotationState{
 
     constructor() {
@@ -54,8 +56,9 @@ class ObenLinks extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  event.offsetX - startDragPointX;
-        this.yVersch =  event.offsetY - startDragPointY;
+        this.xVersch =  event.clientX - startDragPointX;
+        this.yVersch =  startDragPointY - event.clientY;
+
         return this.yVersch+this.xVersch/3;
     }
 

@@ -11,19 +11,22 @@ const TimeInputController = () => {
     let startDragPointY = 0;
 
     const setStartPositions = mousePosition => {
-        console.log(mousePosition);
-        startDragPointX = mousePosition.offsetX;
-        startDragPointY = mousePosition.offsetY;
+        startDragPointX = mousePosition.clientX;
+        startDragPointY = mousePosition.clientY;
     }
 
     const updateDuration = event => {
         let rotationstate = new ObenLinks();
-        if (event.offsetX < 100 && event.offsetY < 100) rotationstate = new ObenLinks()
-        if (event.offsetX > 100 && event.offsetY > 100) rotationstate = new ObenRechts()
-        if (event.offsetX > 100 && event.offsetY > 100) rotationstate = new UntenRechts()
-        if (event.offsetX < 100 && event.offsetY < 100) rotationstate = new UntenLinks()
+        if (event.clientX < 100 && event.clientY < 100) rotationstate = new ObenLinks()
+        if (event.clientX > 100 && event.clientY < 100) rotationstate = new ObenRechts()
+        if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts()
+        if (event.clientX < 100 && event.clientY > 100) rotationstate = new UntenLinks()
+        console.log("eventX:"+event.clientX+ " eventY: "+ event.clientY);
+        const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
+        startDragPointY = event.clientY;
+        startDragPointX = event.clientX;
 
-        duration.setValue(duration.getValue() + rotationstate.rotate(event, startDragPointX, startDragPointY ));
+        duration.setValue(duration.getValue() + newRotation);
 
     }
 
