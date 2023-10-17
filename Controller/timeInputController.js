@@ -35,8 +35,8 @@ const TimeInputController = () => {
         getStart:                 start.getValue,
         setStart:                 start.setValue,
         onStartChanged:           start.onChange,
-        calculateEnd:            calculateEnd,
-        setStartPositions:         setStartPositions,
+        calculateEnd:             calculateEnd,
+        setStartPositions:        setStartPositions,
         updateDuration:           updateDuration,
     }
 };
