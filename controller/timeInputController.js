@@ -2,7 +2,7 @@
 
 const TimeInputController = () => {
 
-    const duration = Observable(20);
+    const duration = Observable(0);
     const start = Observable(0);
 
     const calculateEnd = () => start.getValue() + duration.getValue();
@@ -22,7 +22,7 @@ const TimeInputController = () => {
         if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts()
         if (event.clientX < 100 && event.clientY > 100) rotationstate = new UntenLinks()
         const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
-        console.log(newRotation);
+
         startDragPointY = event.clientY;
         startDragPointX = event.clientX;
 

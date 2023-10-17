@@ -3,6 +3,9 @@ class RotationState {
     xVersch = 0; number
     yVersch = 0;
     scale = 0;
+
+    scaleMultiplicator = 45;
+
     constructor() {
     }
 
@@ -20,8 +23,10 @@ class UntenLinks extends RotationState{
         this.xVersch =  startDragPointX - event.clientX;
         this.yVersch =  startDragPointY - event.clientY;
 
+        this.scale = Math.sqrt(Math.pow(100 - event.clientX, 2) + Math.pow(event.clientY - 100, 2));
+        this.scale = this.scale/this.scaleMultiplicator;
 
-        return this.yVersch+this.xVersch/3;
+        return (this.yVersch+this.xVersch)/this.scale;
     }
 }
 class ObenRechts extends RotationState{
@@ -33,9 +38,11 @@ class ObenRechts extends RotationState{
     rotate(event, startDragPointX, startDragPointY) {
         this.xVersch =  event.clientX - startDragPointX;
         this.yVersch =  event.clientY - startDragPointY;
-        // console.log("eventx:"+event.clientX+ " - startx: "+ startDragPointX);
-        // console.log("x: "+this.xVersch);
-        return this.yVersch+this.xVersch/3;
+
+        this.scale = Math.sqrt(Math.pow(event.clientX -100, 2) + Math.pow(100 - event.clientY, 2));
+        this.scale = this.scale/this.scaleMultiplicator;
+
+        return (this.yVersch+this.xVersch)/this.scale;
     }
 }
 class UntenRechts extends RotationState{
@@ -47,7 +54,11 @@ class UntenRechts extends RotationState{
     rotate(event, startDragPointX, startDragPointY) {
         this.xVersch =  startDragPointX - event.clientX;
         this.yVersch =  event.clientY - startDragPointY;
-        return this.yVersch+this.xVersch/3;
+
+        this.scale = Math.sqrt(Math.pow(event.clientX - 100, 2) + Math.pow(event.clientY -100, 2));
+        this.scale = this.scale/this.scaleMultiplicator;
+
+        return (this.yVersch+this.xVersch)/this.scale;
     }
 }
 
@@ -63,9 +74,9 @@ class ObenLinks extends RotationState{
         this.yVersch =  startDragPointY - event.clientY;
 
         this.scale = Math.sqrt(Math.pow(100 - event.clientX, 2) + Math.pow(100 - event.clientY, 2));
-        this.scale = this.scale/10;
+        this.scale = this.scale/this.scaleMultiplicator;
 
-        return this.yVersch+this.xVersch/this.scale;
+        return (this.yVersch+this.xVersch)/this.scale;
     }
 
 

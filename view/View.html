@@ -11,7 +11,7 @@
     <svg id="wheel"></svg>
     <p id="details"></p>
     <input type="number" id="timeInput" onchange="timeInputController.setDuration(event.target.value);">
-
+    <div id="rectBar"></div>
 </main>
 
 
@@ -19,6 +19,7 @@
 <script src="../controller/timeInputController.js"></script>
 <script src="DetailView.js"></script>
 <script src="WheelView.js"></script>
+<script src="RectBarView.js"></script>
 <script src="../states/ControlStates.js"></script>
 
 <script>
@@ -26,6 +27,7 @@
 
     WheelView(timeInputController, document.getElementById('wheel'));
     DetailView(timeInputController, document.getElementById('details'));
+    RectBarView(timeInputController, document.getElementById('rectBar'));
 
 </script>
 
