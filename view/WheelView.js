@@ -72,5 +72,4 @@ const WheelView = (timeInputController, controlSVG) => {
     timeInputController.onStartChanged(update);
     timeInputController.onDurationChanged(update);
 
-
 }
