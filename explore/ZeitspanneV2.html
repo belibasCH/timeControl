@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 100%;
+        }
+
+        #control {
+            background: grey;
+            cursor: pointer;
+        }
+
+        .stroke-animation {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: stroke 3s ease-out;
+        }
+
+        @keyframes stroke {
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="control">
+    </svg>
+    <h1 id="duration"></h1>
+    <script>
+        var state = 0;
+        var positionX = 0;
+        var positionY = 0;
+
+        var duration = document.getElementById("duration");
+        duration.innerHTML = state + " Minuten";
+
+
+        var svg = document.getElementById("control");
+        svg.setAttribute("height", "200px");
+        svg.setAttribute("width", "400px");
+
+        var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("x", "150");
+        rect.setAttribute("y", "75");
+        rect.setAttribute("width", state);
+        rect.setAttribute("height", "50");
+        rect.setAttribute("fill", "black");
+        svg.appendChild(rect);
+
+        var controlsvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+        controlsvg.setAttribute("x", "100");
+        controlsvg.setAttribute("y", "0");
+
+        svg.appendChild(controlsvg);
+
+        var control = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        control.setAttribute("transform", "rotate(" + state + " 100 100)");
+        rect.setAttribute("x", 200 - state / 2);
+        controlsvg.appendChild(control);
+
+        // Create the first circle
+        const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle1.setAttribute("cx", "100");
+        circle1.setAttribute("cy", "100");
+        circle1.setAttribute("r", "100");
+        circle1.setAttribute("fill", "rgba(250,250,250,0.5)");
+        circle1.setAttribute("stroke", "#404040");
+        control.appendChild(circle1);
+
+        // Create the second circle
+        const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle2.setAttribute("cx", "100");
+        circle2.setAttribute("cy", "100");
+        circle2.setAttribute("r", "39");
+        circle2.setAttribute("fill", "#404040");
+        control.appendChild(circle2);
+
+        // Create the paths
+        const paths = [
+            { d: "M100.617 13.5803L100.617 41.9753", strokeWidth: "4" },
+            { d: "M100 159.259L100 187.654", strokeWidth: "4" },
+            { d: "M100 159.259L100 187.654", strokeWidth: "4" },
+            { d: "M160.494 100H188.889", strokeWidth: "4" },
+            { d: "M13.5802 100H41.9753", strokeWidth: "4" },
+            { d: "M39.2536 39.5093L51.5993 51.855", strokeWidth: "3" },
+            { d: "M149.56 150.689L161.906 163.035", strokeWidth: "3" },
+            { d: "M149.199 51.7801L162.779 38.1998", strokeWidth: "3" },
+            { d: "M38.8171 162.162L52.3974 148.582", strokeWidth: "3" }
+        ];
+        paths.forEach(pathData => {
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", pathData.d);
+            path.setAttribute("stroke", "#404040");
+            path.setAttribute("stroke-width", pathData.strokeWidth);
+            path.setAttribute("stroke-linecap", "round");
+            control.appendChild(path);
+        });
+
+        const circleAnimation = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circleAnimation.setAttribute("cx", "100");
+        circleAnimation.setAttribute("cy", "100");
+        circleAnimation.setAttribute("r", "80");
+        circleAnimation.setAttribute("stroke", "rgba(250,250,250,0.5)");
+        circleAnimation.setAttribute("fill", "none");
+        circleAnimation.setAttribute("stroke-width", "4");
+        circleAnimation.setAttribute("class", "stroke-animation");
+
+
+        control.appendChild(circleAnimation);
+
+
+        control.setAttribute("onmousedown", "setStart(event)");
+
+        const rotate = (state) => {
+            control.setAttribute("transform", "rotate(" + state + " 100 100)");
+            if (state > 0) {
+                rect.setAttribute("width", state);
+                rect.setAttribute("x", 200 - state / 2);
+            }
+            duration.innerHTML = Math.round(state) + " Minuten";
+        }
+
+        const handlewheel = (event) => {
+            const delta = event.deltaY;
+            const scrollInMin = delta / 60;
+            state = state - scrollInMin;
+            rotate(state);
+
+        }
+
+        control.addEventListener("wheel", handlewheel);
+
+        /// Funktion für Mousedown
+        const setStart = (event) => {
+            positionX = event.layerX;
+            positionY = event.layerY;
+            control.addEventListener("mousemove", drag);
+            control.addEventListener("mouseup", stopdrag);
+        }
+        /// Funktion für Mousemove
+        const drag = (event) => {
+            state = state + (calculateRotation(event));
+            positionX = event.clientX;
+            positionY = event.clientY;
+            rotate(state);
+
+        }
+
+        /// Calculate the rotation for the diffrent Zones
+        const calculateRotation = (event) => {
+            xVersch = 0;
+            yVersch = 0;
+            if (event.layerX > 200 && event.layerY < 100) {
+                xVersch = event.clientX - positionX;
+                yVersch = event.clientY - positionY;
+            }
+            if (event.layerX > 200 && event.layerY > 100) {
+                xVersch = positionX - event.clientX;
+                yVersch = event.clientY - positionY;
+            }
+            if (event.layerX < 200 && event.layerY > 100) {
+
+                xVersch = positionX - event.clientX;
+                yVersch = positionY - event.clientY;
+            }
+            if (event.layerX < 200 && event.layerY < 100) {
+                xVersch = event.clientX - positionX;
+                yVersch = positionY - event.clientY;
+            }
+            return yVersch + xVersch / 3;
+        }
+        const stopdrag = (event) => {
+            control.removeEventListener("mousemove", drag);
+            control.removeEventListener("mouseup", stopdrag);
+        }
+
+    </script>
+</body>
+
+</html>

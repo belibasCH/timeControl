@@ -1,0 +1,21 @@
+body {
+    height: 100%;
+}
+
+#control {
+    background: grey;
+    cursor: pointer;
+}
+
+.stroke-animation {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: stroke 3s ease-out;
+}
+
+@keyframes stroke {
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todos</title>
+    <link rel="stylesheet" href="../timeInput.css">
+</head>
+<body>
+
+<main>
+    <h1>Time Control</h1>
+
+    <svg id="wheel"></svg>
+    <p id="details"></p>
+
+</main>
+
+
+<script src="../observable/observable.js"></script>
+<script src="../timeInput/timeInputController.js"></script>
+<script src="DetailView.js"></script>
+<script src="WheelView.js"></script>
+<script>
+    const todoController = TimeInputController();
+
+    WheelView(todoController, document.getElementById('wheel'));
+    DetailView(todoController, document.getElementById('details'));
+
+</script>
+
+</body>
+
+</html>
