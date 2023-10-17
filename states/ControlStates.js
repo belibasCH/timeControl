@@ -2,6 +2,7 @@ class RotationState {
 
     xVersch = 0; number
     yVersch = 0;
+    scale = 0;
     constructor() {
     }
 
@@ -18,6 +19,8 @@ class UntenLinks extends RotationState{
     rotate(event, startDragPointX, startDragPointY) {
         this.xVersch =  startDragPointX - event.clientX;
         this.yVersch =  startDragPointY - event.clientY;
+
+
         return this.yVersch+this.xVersch/3;
     }
 }
@@ -59,7 +62,10 @@ class ObenLinks extends RotationState{
         this.xVersch =  event.clientX - startDragPointX;
         this.yVersch =  startDragPointY - event.clientY;
 
-        return this.yVersch+this.xVersch/3;
+        this.scale = Math.sqrt(Math.pow(100 - event.clientX, 2) + Math.pow(100 - event.clientY, 2));
+        this.scale = this.scale/10;
+
+        return this.yVersch+this.xVersch/this.scale;
     }
 
 

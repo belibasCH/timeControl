@@ -21,8 +21,8 @@ const TimeInputController = () => {
         if (event.clientX > 100 && event.clientY < 100) rotationstate = new ObenRechts()
         if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts()
         if (event.clientX < 100 && event.clientY > 100) rotationstate = new UntenLinks()
-        console.log("eventX:"+event.clientX+ " eventY: "+ event.clientY);
         const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
+        console.log(newRotation);
         startDragPointY = event.clientY;
         startDragPointX = event.clientX;
 
