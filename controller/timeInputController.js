@@ -27,8 +27,11 @@ const TimeInputController = () => {
         startDragPointX = event.clientX;
 
         duration.setValue(duration.getValue() + newRotation);
-
-    }
+    };
+    const updateWheelRotation = event => {
+        const delta = event.deltaY;
+        duration.setValue(duration.getValue() - delta);
+};
 
 
     return {
@@ -40,7 +43,8 @@ const TimeInputController = () => {
         onStartChanged:           start.onChange,
         calculateEnd:             calculateEnd,
         setStartPositions:        setStartPositions,
-        updateDuration:           updateDuration,
-    }
-};
+        updateDuration:     updateDuration,
+        updateWheelRotation:        updateWheelRotation,
+};}
+
 

@@ -60,6 +60,7 @@ const WheelView = (timeInputController, controlSVG) => {
     }
 
     controlSVG.addEventListener("mousedown", startRotation);
+    controlSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
 
     const stopRotation = () => {
         controlSVG.removeEventListener("mousemove", timeInputController.updateDuration);
