@@ -16,8 +16,8 @@ class UntenLinks extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  startDragPointX - event.clientX;
-        this.yVersch =  event.clientY - startDragPointY;
+        this.xVersch =  startDragPointX - event.offsetX;
+        this.yVersch =  event.offsetY - startDragPointY;
         return this.yVersch+this.xVersch/3;
     }
 }
@@ -29,8 +29,8 @@ class UntenRechts extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  startDragPointX - event.clientX;
-        this.yVersch =  startDragPointY - event.clientY;
+        this.xVersch =  startDragPointX - event.offsetX;
+        this.yVersch =  startDragPointY - event.offsetY;
         return this.yVersch+this.xVersch/3;
     }
 }
@@ -42,8 +42,8 @@ class ObenRechts extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  event.clientX - startDragPointX;
-        this.yVersch =  startDragPointY - event.clientY;
+        this.xVersch =  event.offsetX - startDragPointX;
+        this.yVersch =  startDragPointY - event.offsetY;
         return this.yVersch+this.xVersch/3;
     }
 }
@@ -54,8 +54,8 @@ class ObenLinks extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
-        this.xVersch =  event.clientX - startDragPointX;
-        this.yVersch =  event.clientY - startDragPointY;
+        this.xVersch =  event.offsetX - startDragPointX;
+        this.yVersch =  event.offsetY - startDragPointY;
         return this.yVersch+this.xVersch/3;
     }
 

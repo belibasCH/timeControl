@@ -67,8 +67,7 @@ const WheelView = (timeInputController, controlSVG) => {
         controlSVG.removeEventListener("mouseup", stopRotation);
     }
     const update = () => {
-
-        controlSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + " " + size / 2 + " " + size / 2 + ")");
+        controlSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
     };
 
     timeInputController.onStartChanged(update);

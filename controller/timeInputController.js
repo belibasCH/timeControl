@@ -2,7 +2,7 @@
 
 const TimeInputController = () => {
 
-    const duration = Observable(0);
+    const duration = Observable(20);
     const start = Observable(0);
 
     const calculateEnd = () => start.getValue() + duration.getValue();
@@ -18,12 +18,12 @@ const TimeInputController = () => {
 
     const updateDuration = event => {
         let rotationstate = new ObenLinks();
-        if (event.offsetX > 100 && event.offsetY < 100) rotationstate = new ObenLinks()
-        if (event.offsetX > 100 && event.offsetY > 100) rotationstate = new UntenLinks()
-        if (event.offsetX < 100 && event.offsetY > 100) rotationstate = new UntenRechts()
-        if (event.offsetX < 100 && event.offsetY < 100) rotationstate = new ObenRechts()
+        if (event.offsetX < 100 && event.offsetY < 100) rotationstate = new ObenLinks()
+        if (event.offsetX > 100 && event.offsetY > 100) rotationstate = new ObenRechts()
+        if (event.offsetX > 100 && event.offsetY > 100) rotationstate = new UntenRechts()
+        if (event.offsetX < 100 && event.offsetY < 100) rotationstate = new UntenLinks()
 
-        duration.setValue(duration + rotationstate.rotate(event, startDragPointX, startDragPointY ));
+        duration.setValue(duration.getValue() + rotationstate.rotate(event, startDragPointX, startDragPointY ));
 
     }
 
