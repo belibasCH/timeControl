@@ -53,19 +53,29 @@ const WheelView = (timeInputController, controlSVG) => {
     circleAnimation.setAttribute("class", "stroke-animation");
 
     controlSVG.appendChild(circleAnimation);
+
+    const handleWheelEvent = (event) => {
+        timeInputController.updateWheelRotation(event);
+    };
+
     const startRotation = (event) => {
         timeInputController.setStartPositions(event)
         controlSVG.addEventListener("mousemove", timeInputController.updateDuration);
         controlSVG.addEventListener("mouseup", stopRotation);
+        controlSVG.addEventListener("wheel", handleWheelEvent);
     }
-
-    controlSVG.addEventListener("mousedown", startRotation);
-    controlSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
 
     const stopRotation = () => {
         controlSVG.removeEventListener("mousemove", timeInputController.updateDuration);
         controlSVG.removeEventListener("mouseup", stopRotation);
+        controlSVG.removeEventListener("wheel", handleWheelEvent);
+        controlSVG.removeEventListener("wheel", handleWheelEvent);
     }
+
+    controlSVG.addEventListener("mousedown", startRotation);
+    controlSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
+    controlSVG.addEventListener("mouseout", stopRotation);
+
     const update = () => {
         controlSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
     };
