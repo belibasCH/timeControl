@@ -4,14 +4,14 @@ const TimeInputController = () => {
     const duration = Observable(30);
     const start = Observable(0);
 
-    // Temoprary variables for draging
+    // Temporary variables for dragging
     let startDragPointX = 0;
     let startDragPointY = 0;
 
     //Calculates the end of the meeting
     const calculateEnd = () => start.getValue() + duration.getValue();
 
-    //Sets the start positions for draging - temporary variables
+    //Sets the start positions for dragging - temporary variables
     const setStartPositions = mousePosition => {
         startDragPointX = mousePosition.clientX;
         startDragPointY = mousePosition.clientY;
