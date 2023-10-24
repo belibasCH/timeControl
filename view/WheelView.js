@@ -1,10 +1,19 @@
 const WheelView = (timeInputController, controlSVG) => {
     const size = 200;
 
-    controlSVG.setAttribute("x", "0");
-    controlSVG.setAttribute("y", "0");
-    controlSVG.setAttribute("width", `${size}`);
-    controlSVG.setAttribute("height", `${size}`);
+    const update = () => {
+        controlSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+    };
+
+    timeInputController.onStartChanged(update);
+    timeInputController.onDurationChanged(update);
+
+    const drawInitailWheel = wheelSVG => {
+
+    wheelSVG.setAttribute("x", "0");
+    wheelSVG.setAttribute("y", "0");
+    wheelSVG.setAttribute("width", `${size}`);
+    wheelSVG.setAttribute("height", `${size}`);
 
     const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle1.setAttribute("cx", `${size / 2}`);
@@ -12,7 +21,7 @@ const WheelView = (timeInputController, controlSVG) => {
     circle1.setAttribute("r", `${size / 2}`);
     circle1.setAttribute("fill", "rgba(250,250,250,0.5)");
     circle1.setAttribute("stroke", "#404040");
-    controlSVG.appendChild(circle1);
+    wheelSVG.appendChild(circle1);
 
     // Create the second circle
     const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -20,7 +29,7 @@ const WheelView = (timeInputController, controlSVG) => {
     circle2.setAttribute("cy", `${size / 2}`);
     circle2.setAttribute("r", "39");
     circle2.setAttribute("fill", "#404040");
-    controlSVG.appendChild(circle2);
+    wheelSVG.appendChild(circle2);
 
     // Create the paths
     const paths = [
@@ -40,7 +49,7 @@ const WheelView = (timeInputController, controlSVG) => {
         path.setAttribute("stroke", "#404040");
         path.setAttribute("stroke-width", pathData.strokeWidth);
         path.setAttribute("stroke-linecap", "round");
-        controlSVG.appendChild(path);
+        wheelSVG.appendChild(path);
     });
 
     const circleAnimation = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -54,23 +63,35 @@ const WheelView = (timeInputController, controlSVG) => {
 
     controlSVG.appendChild(circleAnimation);
     const startRotation = (event) => {
-        timeInputController.setStartPositions(event)
-        controlSVG.addEventListener("mousemove", timeInputController.updateDuration);
-        controlSVG.addEventListener("mouseup", stopRotation);
+        timeInputController.setStartPositions(event);
+        wheelSVG.addEventListener("mousemove", updateWheelRotation);
+        wheelSVG.addEventListener("touchmove", updateWheelRotation);
+        wheelSVG.addEventListener("mouseup", stopRotation);
+        wheelSVG.addEventListener("touchend", stopRotation);
+
+    };
+    const updateWheelRotation = event => {
+        timeInputController.updateDuration(event);
+        console.log(event.clientX);
+        if (event.clientX > 190 || event.clientX < 10 || event.clientY > 190 || event.clientY < 10) {
+            stopRotation();
+        }
     }
 
-    controlSVG.addEventListener("mousedown", startRotation);
-    controlSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
+    wheelSVG.addEventListener("mousedown", startRotation);
+    wheelSVG.addEventListener("touchstart", startRotation);
+    wheelSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
 
     const stopRotation = () => {
-        controlSVG.removeEventListener("mousemove", timeInputController.updateDuration);
-        controlSVG.removeEventListener("mouseup", stopRotation);
+        wheelSVG.removeEventListener("mousemove", updateWheelRotation);
+        wheelSVG.removeEventListener("touchmove", updateWheelRotation);
+        wheelSVG.removeEventListener("mouseup", stopRotation);
+        wheelSVG.removeEventListener("touchend", stopRotation);
     }
-    const update = () => {
-        controlSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
     };
 
-    timeInputController.onStartChanged(update);
-    timeInputController.onDurationChanged(update);
+
+
+    drawInitailWheel(controlSVG);
 
 }

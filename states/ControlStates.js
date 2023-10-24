@@ -70,6 +70,7 @@ class ObenLinks extends RotationState{
     }
 
     rotate(event, startDragPointX, startDragPointY) {
+
         this.xVersch =  event.clientX - startDragPointX;
         this.yVersch =  startDragPointY - event.clientY;
 
