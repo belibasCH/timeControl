@@ -6,6 +6,14 @@ const WheelView = (timeInputController, controlSVG) => {
     controlSVG.setAttribute("width", `${size}`);
     controlSVG.setAttribute("height", `${size}`);
 
+    const backgroundCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    backgroundCircle.setAttribute("cx", `${size / 2}`);
+    backgroundCircle.setAttribute("cy", `${size / 2}`);
+    backgroundCircle.setAttribute("r", `${size / 2 + 20}`);
+    backgroundCircle.setAttribute("fill", "rgba(250,120,250,0.5)");
+    backgroundCircle.setAttribute("stroke", "#404040");
+    controlSVG.appendChild(backgroundCircle);
+
     const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle1.setAttribute("cx", `${size / 2}`);
     circle1.setAttribute("cy", `${size / 2}`);
