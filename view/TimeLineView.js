@@ -10,8 +10,6 @@ const TimeLineView = (timeInputController, lineElement) => {
             .then((svgContent) => {
                 // Create an SVG element
                 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                svg.setAttribute("width", "400");
-                svg.setAttribute("height", "300");
 
                 // Append the SVG content from the file to the SVG element
                 svg.innerHTML = svgContent;

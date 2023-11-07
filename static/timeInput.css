@@ -18,6 +18,10 @@ body {
     animation: stroke 2s ease-out;
 }
 
+#timeLine svg{
+    width: 100%;
+}
+
 @keyframes stroke {
 
     to {
