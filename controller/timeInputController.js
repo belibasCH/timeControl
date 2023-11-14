@@ -42,6 +42,12 @@ const TimeInputController = () => {
         duration.setValue(duration.getValue() - delta);
     };
 
+    const updateStart  = (event, startX)=> {
+        const distance = event.clientX - startX;
+        console.log(distance);
+        start.setValue(start.getValue() + distance);
+    };
+
     return {
         getDuration: duration.getValue,
         setDuration: duration.setValue,
@@ -56,6 +62,7 @@ const TimeInputController = () => {
         setStartPositions: setStartPositions,
         updateDuration: updateDuration,
         updateWheelRotation: updateWheelRotation,
+        updateStart : updateStart,
     };
 }
 

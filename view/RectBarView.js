@@ -2,16 +2,37 @@
 const RectBarView = (timeInputController, barElement) => {
     const barHeight = 27;
     const width = timeInputController.getWidth();
-    barElement.setAttribute("viewBox", `0 0 1200 120`);
+    barElement.setAttribute("viewBox", `0 0 1200 60`);
     barElement.setAttribute("width", width);
-    barElement.setAttribute("height", "120");
+    barElement.setAttribute("height", "60");
 
     const rectBarGroup =   document.createElementNS("http://www.w3.org/2000/svg", "g");
     rectBarGroup.setAttribute("width", timeInputController.getDuration());
     rectBarGroup.setAttribute("height", barHeight.toString());
-    rectBarGroup.setAttribute("viewBox", "0 0 "+ timeInputController.getDuration()+" 27");
     rectBarGroup.setAttribute("fill", "none");
     rectBarGroup.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+    let startposition = 0;
+
+    rectBarGroup.addEventListener("mousedown", event => {
+        startposition = event.clientX;
+        rectBarGroup.addEventListener("mousemove", updateBar);
+        rectBarGroup.addEventListener("touchmove", updateBar);
+        rectBarGroup.addEventListener("mouseup", stopBar);
+        rectBarGroup.addEventListener("touchend", stopBar);
+
+    });
+    const updateBar = event => {
+        if (event.clientX)
+        timeInputController.updateStart(event, startposition);
+    }
+    const stopBar = event => {
+        rectBarGroup.removeEventListener("mousemove", updateBar);
+        rectBarGroup.removeEventListener("touchmove", updateBar);
+        rectBarGroup.removeEventListener("mouseup", stopBar);
+        rectBarGroup.removeEventListener("touchend", stopBar);
+
+    }
 
 // Erstellt das Gruppenelement mit Filter
     const groupWithFilter = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -94,7 +115,6 @@ const RectBarView = (timeInputController, barElement) => {
 
     const render = () => {
         rectBarGroup.setAttribute("width", timeInputController.getDuration());
-        rectBarGroup.setAttribute("viewBox", "0 0 "+ timeInputController.getDuration()+" 27");
         rect.setAttribute("width", timeInputController.getDuration());
         handlers.setAttribute("transform", "translate("+timeInputController.getDuration()/2+" 0)");
         rectBarGroup.setAttribute("transform", "translate("+timeInputController.getStart()+" 0)");

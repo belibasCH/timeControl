@@ -2,9 +2,9 @@
 const TimeLineView = (timeInputController, lineElement) => {
     const width = timeInputController.getWidth();
 
-    lineElement.setAttribute("viewBox", `0 0 1200 120`);
+    lineElement.setAttribute("viewBox", `0 0 1200 60`);
     lineElement.setAttribute("width", `${width}`);
-    lineElement.setAttribute("height", "120");
+    lineElement.setAttribute("height", "60");
 
 
         // Function to create a line element

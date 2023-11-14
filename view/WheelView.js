@@ -4,10 +4,15 @@ const WheelView = (timeInputController, wheelSVG) => {
     const realSize = 200;
 
     //Update the wheel on start and duration change
-    const update = () => wheelSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+    const update = () => {
+        wheelSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+        // wheelSVG.style.left = (timeInputController.getStart() + timeInputController.getDuration/2 - realSize/2) +"px";
+
+    };
 
     timeInputController.onStartChanged(update);
     timeInputController.onDurationChanged(update);
+
 
     //IIFE to draw the wheel
     (() => {
@@ -78,7 +83,6 @@ const WheelView = (timeInputController, wheelSVG) => {
         };
         const updateWheelRotation = event => {
             timeInputController.updateDuration(event);
-            console.log(event.clientX);
             if (event.clientX > 190 || event.clientX < 10 || event.clientY > 190 || event.clientY < 10) {
                 stopRotation();
             }

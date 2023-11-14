@@ -11,6 +11,10 @@ body {
     background: grey;
     cursor: pointer;
 }
+#wheel{
+    position: absolute;
+    top: 0;
+}
 
 .stroke-animation {
     stroke-dasharray: 700;
@@ -27,4 +31,9 @@ body {
     to {
         stroke-dashoffset: 0;
     }
+}
+#details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
