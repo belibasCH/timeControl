@@ -13,10 +13,8 @@ const RectBarView = (timeInputController, barElement) => {
     rectBarGroup.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     rectBarGroup.setAttribute("cursor", "pointer");
 
-    let startposition = 0;
-
     rectBarGroup.addEventListener("mousedown", event => {
-        startposition = event.clientX;
+        timeInputController.setStartPositions(event);
         rectBarGroup.addEventListener("mousemove", updateBar);
         rectBarGroup.addEventListener("touchmove", updateBar);
         rectBarGroup.addEventListener("mouseup", stopBar);
@@ -25,10 +23,9 @@ const RectBarView = (timeInputController, barElement) => {
 
     });
     const updateBar = event => {
-        timeInputController.updateStart(event, startposition);
+        timeInputController.updateStart(event);
     }
     const stopBar = event => {
-        startposition = 0;
         rectBarGroup.removeEventListener("mousemove", updateBar);
         rectBarGroup.removeEventListener("touchmove", updateBar);
         rectBarGroup.removeEventListener("mouseup", stopBar);
@@ -120,7 +117,7 @@ const RectBarView = (timeInputController, barElement) => {
         rectBarGroup.setAttribute("width", timeInputController.getDuration());
         rect.setAttribute("width", timeInputController.getDuration());
         handlers.setAttribute("transform", "translate("+timeInputController.getDuration()/2+" 0)");
-        rectBarGroup.setAttribute("transform", "translate("+timeInputController.getStart()/20+" 0)");
+        rectBarGroup.setAttribute("transform", "translate("+timeInputController.getStart()+" 0)");
         //rect.setAttribute("x", timeInputController.getStart());
     };
 

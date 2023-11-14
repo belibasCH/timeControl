@@ -23,11 +23,12 @@ const TimeInputController = () => {
     const setStartPositions = mousePosition => {
         startDragPointX = mousePosition.clientX;
         startDragPointY = mousePosition.clientY;
-    }
+    };
 
     //Updates the duration of the meeting on mousemove
     const updateDuration = event => {
         let rotationstate = new ObenLinks();
+        console.log("x: "+event.clientX);
         if (event.clientX < 100 && event.clientY < 100) rotationstate = new ObenLinks()
         if (event.clientX > 100 && event.clientY < 100) rotationstate = new ObenRechts()
         if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts()
@@ -38,6 +39,8 @@ const TimeInputController = () => {
         startDragPointX = event.clientX;
 
         duration.setValue(duration.getValue() + newRotation);
+        start.setValue(start.getValue() - newRotation/2);
+
     };
 
     //Updates the duration of the meeting on mousewheel
@@ -46,15 +49,11 @@ const TimeInputController = () => {
         duration.setValue(duration.getValue() - delta);
     };
 
-    const updateStart  = (event, startX)=> {
-
-        const distance = event.clientX - startX;
-
-        console.log("distance: "+distance);
-        console.log("get start: "+start.getValue() );
+    const updateStart  = (event)=> {
+        const distance = event.clientX - startDragPointX;
         const newStart = start.getValue() + distance;
-        console.log("newStart: "+ newStart);
         start.setValue(newStart);
+        startDragPointX = event.clientX;
     };
 
     return {
