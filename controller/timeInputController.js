@@ -1,7 +1,10 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
 
-    const width = Observable(500);
+    const width = Observable(1000);
+    const ticks = Observable(5);
+    const timeLineLength = Observable(750);
+    const startHour = Observable(6);
     // Model
     const duration = Observable(30);
     const start = Observable(0);
@@ -48,6 +51,9 @@ const TimeInputController = () => {
         setStart: start.setValue,
         onStartChanged: start.onChange,
         getWidth: width.getValue,
+        getTicks: ticks.getValue,
+        getTimeLineLength: timeLineLength.getValue,
+        getStartHour: startHour.getValue,
         calculateEnd: calculateEnd,
         setStartPositions: setStartPositions,
         updateDuration: updateDuration,
