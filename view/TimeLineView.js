@@ -1,72 +1,57 @@
-/*
-const TimeLineView = (timeInputController, lineElement) => {
-    const render = () => {
-
-        // Specify the path to your SVG file
-        const svgFilePath = "./../static/assets/timeLine.svg";
-
-        // Use the fetch API to retrieve the SVG file
-        fetch(svgFilePath)
-            .then((response) => response.text())
-            .then((svgContent) => {
-                // Create a div element to act as a container
-                const container = document.createElement("div");
-
-                // Append the SVG content from the file to the container
-                container.innerHTML = svgContent;
-
-                // Append the container to the main lineElement
-                lineElement.appendChild(container);
-            })
-            .catch((error) => {
-                console.error("Error loading SVG file:", error);
-            });
-    }
-    render();
-}*/
-
 
 const TimeLineView = (timeInputController, lineElement) => {
-    const render = () => {
-        const timelineSvgFilePath = "./../static/assets/timeLine.svg";
-        const barSvgFilePath = "./../static/assets/Group 83.svg"; // Path to your second SVG
+    const width = timeInputController.getWidth();
 
-        // Fetch and load the timeline SVG
-        fetch(timelineSvgFilePath)
-            .then(response => response.text())
-            .then(svgContent => {
-                // Create a container for the SVGs
-                const svgContainer = document.createElement("div");
-                svgContainer.style.position = "relative"; // Set position to relative for inner positioning
+    lineElement.setAttribute("viewBox", `0 0 1200 120`);
+    lineElement.setAttribute("width", `${width}`);
+    lineElement.setAttribute("height", "120");
 
-                // Append the timeline SVG to the container
-                const timelineContainer = document.createElement("div");
-                timelineContainer.innerHTML = svgContent;
-                svgContainer.appendChild(timelineContainer);
 
-                // Fetch and load the bar SVG
-                fetch(barSvgFilePath)
-                    .then(response => response.text())
-                    .then(svgContent => {
-                        // Create a container for the bar SVG
-                        const barContainer = document.createElement("div");
-                        barContainer.innerHTML = svgContent;
+        // Function to create a line element
+        function createLine(x1, y1, x2, y2, stroke, strokeWidth, strokeLinecap) {
+            var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", stroke);
+            if (strokeWidth) line.setAttribute("stroke-width", strokeWidth);
+            if (strokeLinecap) line.setAttribute("stroke-linecap", strokeLinecap);
+            return line;
+        }
 
-                        // Style the barContainer for overlay
-                        barContainer.style.position = "absolute";
-                        barContainer.style.top = '31%'; // Adjust these values as needed
-                        barContainer.style.left = '2.45%'; // Adjust these values as needed
-                        barContainer.style.width = "100%";
+        // Function to create a path element
+        function createPath(d, stroke) {
+            var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", d);
+            path.setAttribute("stroke", stroke);
+            return path;
+        }
 
-                        // Append the bar SVG to the container
-                        svgContainer.appendChild(barContainer);
+        // Add the main path to the SVG
+        lineElement.appendChild(createPath("M0 16.5H757", "#6B4D57"));
 
-                        // Append the SVG container to the main lineElement
-                        lineElement.appendChild(svgContainer);
-                    })
-                    .catch(error => console.error("Error loading bar SVG file:", error));
-            })
-            .catch(error => console.error("Error loading timeline SVG file:", error));
-    }
-    render();
+        // Add lines to the SVG
+        var lines = [
+            { x1: "1", y1: "1", x2: "0.999999", y2: "29", stroke: "#525252", strokeWidth: "2", strokeLinecap: "round" },
+            { x1: "63.5", y1: "9.5", x2: "63.5", y2: "23.5", stroke: "#525252", strokeLinecap: "round" },
+            // ... (add all other line data here)
+            // Example of adding more lines:
+            { x1: "441.5", y1: "9.5", x2: "441.5", y2: "23.5", stroke: "#525252", strokeLinecap: "round" },
+            { x1: "630.5", y1: "9.5", x2: "630.5", y2: "23.5", stroke: "#525252", strokeLinecap: "round" },
+            // ... (add the rest of the lines)
+        ];
+
+        // Iterate over each line data and append to SVG
+        lines.forEach(function(lineData) {
+            lineElement.appendChild(createLine(lineData.x1, lineData.y1, lineData.x2, lineData.y2, lineData.stroke, lineData.strokeWidth, lineData.strokeLinecap));
+        });
+
+
+
+
+
+
+
+
 }
