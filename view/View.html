@@ -11,21 +11,24 @@
     <svg id="wheel"></svg>
     <p id="details"></p>
     <svg id="rectBar"></svg>
+    <svg id="timeLine"></svg>
 
 </main>
 
-
+<script src="Constants.js"></script>
 <script src="../observable/observable.js"></script>
 <script src="../controller/timeInputController.js"></script>
 <script src="DetailView.js"></script>
 <script src="WheelView.js"></script>
 <script src="RectBarView.js"></script>
+<script src="TimeLineView.js"></script>
 <script src="../states/ControlStates.js"></script>
 
 <script>
     const timeInputController = TimeInputController();
     WheelView(timeInputController, document.getElementById('wheel'));
     DetailView(timeInputController, document.getElementById('details'));
+    TimeLineView(timeInputController, document.getElementById('timeLine'));
     RectBarView(timeInputController, document.getElementById('rectBar'));
 </script>
 

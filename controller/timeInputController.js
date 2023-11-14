@@ -1,5 +1,7 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
+
+    const width = Observable(500);
     // Model
     const duration = Observable(200);
     const start = Observable(50);
@@ -13,7 +15,7 @@ const TimeInputController = () => {
     //Calculates the end of the meeting
     const calculateEnd = () => start.getValue() + duration.getValue();
 
-    //Sets the start positions for draging - temporary variables
+    //Sets the start positions for dragging - temporary variables
     const setStartPositions = mousePosition => {
         startDragPointX = mousePosition.clientX;
         startDragPointY = mousePosition.clientY;
@@ -22,10 +24,10 @@ const TimeInputController = () => {
     //Updates the duration of the meeting on mousemove
     const updateDuration = event => {
         let rotationstate = new ObenLinks();
-        if (event.clientX < 100 && event.clientY < 100) rotationstate = new ObenLinks();
-        if (event.clientX > 100 && event.clientY < 100) rotationstate = new ObenRechts();
-        if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts();
-        if (event.clientX < 100 && event.clientY > 100) rotationstate = new UntenLinks();
+        if (event.clientX < 100 && event.clientY < 100) rotationstate = new ObenLinks()
+        if (event.clientX > 100 && event.clientY < 100) rotationstate = new ObenRechts()
+        if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts()
+        if (event.clientX < 100 && event.clientY > 100) rotationstate = new UntenLinks()
         const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
 
         startDragPointY = event.clientY;
@@ -47,6 +49,7 @@ const TimeInputController = () => {
         getStart: start.getValue,
         setStart: start.setValue,
         onStartChanged: start.onChange,
+        getWidth: width.getValue,
         getWheelsize: wheelsize.getValue,
         setWheelsize: wheelsize.setValue,
         calculateEnd: calculateEnd,
