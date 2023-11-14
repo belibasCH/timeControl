@@ -3,9 +3,13 @@ body {
     margin: 0;
 }
 
-#rectBar, #timeLine {
+#rectBar {
     position: absolute;
-    top: 0;
+    top: 327px;
+}
+#timeLine {
+    position: absolute;
+    top: 280px;
 }
 #control {
     background: grey;

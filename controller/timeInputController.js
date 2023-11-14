@@ -1,9 +1,12 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
 
-    const width = Observable(1000);
+    const width = Observable(750);
+    const ticks = Observable(5);
+    const timeLineLength = Observable(750);
+    const startHour = Observable(6);
     // Model
-    const duration = Observable(200);
+    const duration = Observable(400);
     const start = Observable(0);
     const wheelsize = Observable(200);
     const wheelposition = Observable({x: 0, y: 0});
@@ -11,6 +14,7 @@ const TimeInputController = () => {
     // Temporary variables for dragging
     let startDragPointX = 0;
     let startDragPointY = 0;
+
 
     //Calculates the end of the meeting
     const calculateEnd = () => start.getValue() + duration.getValue();
@@ -43,9 +47,14 @@ const TimeInputController = () => {
     };
 
     const updateStart  = (event, startX)=> {
+
         const distance = event.clientX - startX;
-        console.log(distance);
-        start.setValue(start.getValue() + distance);
+
+        console.log("distance: "+distance);
+        console.log("get start: "+start.getValue() );
+        const newStart = start.getValue() + distance;
+        console.log("newStart: "+ newStart);
+        start.setValue(newStart);
     };
 
     return {
@@ -56,6 +65,9 @@ const TimeInputController = () => {
         setStart: start.setValue,
         onStartChanged: start.onChange,
         getWidth: width.getValue,
+        getTicks: ticks.getValue,
+        getTimeLineLength: timeLineLength.getValue,
+        getStartHour: startHour.getValue,
         getWheelsize: wheelsize.getValue,
         setWheelsize: wheelsize.setValue,
         calculateEnd: calculateEnd,

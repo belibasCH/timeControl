@@ -2,15 +2,16 @@
 const RectBarView = (timeInputController, barElement) => {
     const barHeight = 27;
     const width = timeInputController.getWidth();
-    barElement.setAttribute("viewBox", `0 0 1200 60`);
+    barElement.setAttribute("viewBox", `0 0 750 120`);
     barElement.setAttribute("width", width);
-    barElement.setAttribute("height", "60");
+    barElement.setAttribute("height", "120");
 
     const rectBarGroup =   document.createElementNS("http://www.w3.org/2000/svg", "g");
     rectBarGroup.setAttribute("width", timeInputController.getDuration());
     rectBarGroup.setAttribute("height", barHeight.toString());
     rectBarGroup.setAttribute("fill", "none");
     rectBarGroup.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    rectBarGroup.setAttribute("cursor", "pointer");
 
     let startposition = 0;
 
@@ -23,10 +24,10 @@ const RectBarView = (timeInputController, barElement) => {
 
     });
     const updateBar = event => {
-        if (event.clientX)
         timeInputController.updateStart(event, startposition);
     }
     const stopBar = event => {
+        startposition = 0;
         rectBarGroup.removeEventListener("mousemove", updateBar);
         rectBarGroup.removeEventListener("touchmove", updateBar);
         rectBarGroup.removeEventListener("mouseup", stopBar);
@@ -117,8 +118,8 @@ const RectBarView = (timeInputController, barElement) => {
         rectBarGroup.setAttribute("width", timeInputController.getDuration());
         rect.setAttribute("width", timeInputController.getDuration());
         handlers.setAttribute("transform", "translate("+timeInputController.getDuration()/2+" 0)");
-        rectBarGroup.setAttribute("transform", "translate("+timeInputController.getStart()+" 0)");
-
+        rectBarGroup.setAttribute("transform", "translate("+timeInputController.getStart()/20+" 0)");
+        //rect.setAttribute("x", timeInputController.getStart());
     };
 
     timeInputController.onDurationChanged(render);
