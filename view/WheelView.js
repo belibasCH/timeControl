@@ -78,19 +78,18 @@ const WheelView = (timeInputController, wheelSVG) => {
             wheelSVG.addEventListener("mousemove", updateWheelRotation);
             wheelSVG.addEventListener("touchmove", updateWheelRotation);
             wheelSVG.addEventListener("mouseup", stopRotation);
+            wheelSVG.addEventListener("mouseleave", stopRotation);
             wheelSVG.addEventListener("touchend", stopRotation);
 
         };
         const updateWheelRotation = event => {
             timeInputController.updateDuration(event);
-            if (event.clientX > 190 || event.clientX < 10 || event.clientY > 190 || event.clientY < 10) {
-                stopRotation();
-            }
         };
         const stopRotation = () => {
             wheelSVG.removeEventListener("mousemove", updateWheelRotation);
             wheelSVG.removeEventListener("touchmove", updateWheelRotation);
             wheelSVG.removeEventListener("mouseup", stopRotation);
+            wheelSVG.removeEventListener("mouseleave", stopRotation);
             wheelSVG.removeEventListener("touchend", stopRotation);
         };
 

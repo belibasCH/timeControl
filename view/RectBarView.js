@@ -20,6 +20,7 @@ const RectBarView = (timeInputController, barElement) => {
         rectBarGroup.addEventListener("mousemove", updateBar);
         rectBarGroup.addEventListener("touchmove", updateBar);
         rectBarGroup.addEventListener("mouseup", stopBar);
+        rectBarGroup.addEventListener("mouseleave", stopBar);
         rectBarGroup.addEventListener("touchend", stopBar);
 
     });
@@ -31,6 +32,7 @@ const RectBarView = (timeInputController, barElement) => {
         rectBarGroup.removeEventListener("mousemove", updateBar);
         rectBarGroup.removeEventListener("touchmove", updateBar);
         rectBarGroup.removeEventListener("mouseup", stopBar);
+        rectBarGroup.removeEventListener("mouseleave", stopBar);
         rectBarGroup.removeEventListener("touchend", stopBar);
 
     }
