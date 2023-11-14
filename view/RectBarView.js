@@ -1,9 +1,10 @@
 
 const RectBarView = (timeInputController, barElement) => {
     const barHeight = 27;
-
-    //TODO - viewBox von svg - barElement setzen
-    barElement.setAttribute("width", timeInputController.getDuration()+ timeInputController.getStart());
+    const width = timeInputController.getWidth();
+    barElement.setAttribute("viewBox", `0 0 1200 120`);
+    barElement.setAttribute("width", width);
+    barElement.setAttribute("height", "120");
 
     const rectBarGroup =   document.createElementNS("http://www.w3.org/2000/svg", "g");
     rectBarGroup.setAttribute("width", timeInputController.getDuration());
@@ -97,7 +98,6 @@ const RectBarView = (timeInputController, barElement) => {
         rect.setAttribute("width", timeInputController.getDuration());
         handlers.setAttribute("transform", "translate("+timeInputController.getDuration()/2+" 0)");
         rectBarGroup.setAttribute("transform", "translate("+timeInputController.getStart()+" 0)");
-        barElement.setAttribute("width", timeInputController.getDuration()+ timeInputController.getStart());
 
     };
 

@@ -1,10 +1,10 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
 
-    const width = Observable(500);
+    const width = Observable(1000);
     // Model
     const duration = Observable(200);
-    const start = Observable(50);
+    const start = Observable(0);
     const wheelsize = Observable(200);
     const wheelposition = Observable({x: 0, y: 0});
 

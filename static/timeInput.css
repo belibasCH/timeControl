@@ -3,6 +3,10 @@ body {
     margin: 0;
 }
 
+#rectBar, #timeLine {
+    position: absolute;
+    top: 0;
+}
 #control {
     background: grey;
     cursor: pointer;
