@@ -2,10 +2,6 @@ body {
     height: 100%;
     margin: 0;
 }
-#rectBar {
-    height: 30px;
-    background: cadetblue;
-}
 
 #control {
     background: grey;

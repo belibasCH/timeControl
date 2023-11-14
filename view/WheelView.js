@@ -1,11 +1,11 @@
 const WheelView = (timeInputController, wheelSVG) => {
     //Wheel size - currently not dynamic - TODO
-    const size = 200;
+    const svgSize = timeInputController.getWheelsize();
+    const realSize = 200;
 
     //Update the wheel on start and duration change
-    const update = () => {
-        wheelSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
-    };
+    const update = () => wheelSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+
     timeInputController.onStartChanged(update);
     timeInputController.onDurationChanged(update);
 
@@ -13,20 +13,21 @@ const WheelView = (timeInputController, wheelSVG) => {
     (() => {
         wheelSVG.setAttribute("x", "0");
         wheelSVG.setAttribute("y", "0");
-        wheelSVG.setAttribute("width", `${size}`);
-        wheelSVG.setAttribute("height", `${size}`);
+        wheelSVG.setAttribute("width", `${svgSize}`);
+        wheelSVG.setAttribute("height", `${svgSize}`);
+        wheelSVG.setAttribute("viewBox", `0 0 ${realSize} ${realSize}`);
         const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle1.setAttribute("cx", `${size / 2}`);
-        circle1.setAttribute("cy", `${size / 2}`);
-        circle1.setAttribute("r", `${size / 2}`);
+        circle1.setAttribute("cx", `${realSize / 2}`);
+        circle1.setAttribute("cy", `${realSize / 2}`);
+        circle1.setAttribute("r", `${realSize / 2}`);
         circle1.setAttribute("fill", "rgba(250,250,250,0.5)");
         circle1.setAttribute("stroke", "#404040");
         wheelSVG.appendChild(circle1);
 
         // Create the second circle
         const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle2.setAttribute("cx", `${size / 2}`);
-        circle2.setAttribute("cy", `${size / 2}`);
+        circle2.setAttribute("cx", `${realSize / 2}`);
+        circle2.setAttribute("cy", `${realSize / 2}`);
         circle2.setAttribute("r", "39");
         circle2.setAttribute("fill", "#404040");
         wheelSVG.appendChild(circle2);
@@ -52,22 +53,22 @@ const WheelView = (timeInputController, wheelSVG) => {
             wheelSVG.appendChild(path);
         });
 
-        const circleAnimation = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circleAnimation.setAttribute("cx", `${size / 2}`);
-        circleAnimation.setAttribute("cy", `${size / 2}`);
-        circleAnimation.setAttribute("r", "80");
-        circleAnimation.setAttribute("stroke", "rgba(250,0,0,0.5)");
-        circleAnimation.setAttribute("fill", "none");
-        circleAnimation.setAttribute("stroke-width", "4");
-        circleAnimation.setAttribute("class", "stroke-animation");
-
-        wheelSVG.appendChild(circleAnimation);
+        // const circleAnimation = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        // circleAnimation.setAttribute("cx", `${svgSize/ 2}`);
+        // circleAnimation.setAttribute("cy", `${svgSize / 2}`);
+        // circleAnimation.setAttribute("r", "80");
+        // circleAnimation.setAttribute("stroke", "rgba(250,0,0,0.5)");
+        // circleAnimation.setAttribute("fill", "none");
+        // circleAnimation.setAttribute("stroke-width", "4");
+        // circleAnimation.setAttribute("class", "stroke-animation");
+        //
+        // wheelSVG.appendChild(circleAnimation);
 
     })();
 
     //IIFE to add the event listeners
     (() => {
-        const startRotation = (event) => {
+        const startRotation = event => {
             timeInputController.setStartPositions(event);
             wheelSVG.addEventListener("mousemove", updateWheelRotation);
             wheelSVG.addEventListener("touchmove", updateWheelRotation);
@@ -96,4 +97,4 @@ const WheelView = (timeInputController, wheelSVG) => {
     })();
 
 
-}
+};
