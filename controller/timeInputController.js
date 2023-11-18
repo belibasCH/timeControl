@@ -6,7 +6,7 @@ const TimeInputController = () => {
     const timeLineLength = Observable(750);
     const startHour = Observable(6);
     // Model
-    const duration = Observable(400);
+    const duration = Observable(100);
     const start = Observable(0);
     const wheelsize = Observable(200);
     const wheelposition = Observable({x: 0, y: 0});
