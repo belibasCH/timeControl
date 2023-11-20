@@ -3,13 +3,25 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
     const realSize = 200; // Base size for scaling
 
     wheelWrapper.setAttribute("width", timeInputController.getTimeLineLength());
-    wheelWrapper.setAttribute("height", svgSize);
+    wheelWrapper.setAttribute("height", svgSize+20);
+
+    const getMiddle = () => {
+        return timeInputController.getStart() + timeInputController.getDuration()/2
+    }
+
+    const tick = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    tick.setAttribute("x", getMiddle().toString());
+    tick.setAttribute("y", "0");
+    tick.setAttribute("points", getMiddle()+5+",0 "+getMiddle()+",20 "+(getMiddle()+10)+",20");
+    tick.setAttribute("fill", "#6083FC");
+    wheelWrapper.appendChild(tick);
+
 
 
     const wheelSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     wheelSVG.setAttribute("id", "wheel");
-    wheelSVG.setAttribute("x", (timeInputController.getStart() + timeInputController.getDuration/2 - timeInputController.getWheelsize()/2).toString());
-    wheelSVG.setAttribute("y", "0"); // Y position
+    wheelSVG.setAttribute("x", (timeInputController.getStart() + timeInputController.getDuration()/2 - timeInputController.getWheelsize()/2).toString());
+    wheelSVG.setAttribute("y", "20"); // Y position
     wheelSVG.setAttribute("fill", "blue"); // Fill color
 
     wheelWrapper.appendChild(wheelSVG);
@@ -39,6 +51,10 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
         innerGroup.setAttribute("transform-origin", "center center")   ;
         innerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
 
+
+        tick.setAttribute("x", getMiddle().toString());
+        tick.setAttribute("points", getMiddle()+5+",0 "+getMiddle()+",20 "+(getMiddle()+10)+",20");
+
         wheelSVG.setAttribute("x", (timeInputController.getStart() + timeInputController.getDuration()/2 - timeInputController.getWheelsize()/2).toString());
         duration = timeInputController.getDuration();
         hours = Math.floor(duration / 60);
@@ -50,7 +66,6 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
     timeInputController.onDurationChanged(update);
 
 
-        wheelSVG.setAttribute("y", "0");
         wheelSVG.setAttribute("width", `${svgSize}`);
         wheelSVG.setAttribute("height", `${svgSize}`);
         wheelSVG.setAttribute("viewbox", `0 0 ${realSize} ${realSize}`);
