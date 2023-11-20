@@ -27,10 +27,10 @@ const TimeInputController = () => {
     const updateDuration = event => {
         let rotationstate = new ObenLinks();
         console.log("x: "+event.clientX);
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() < 100 && event.clientY < 100) rotationstate = new ObenLinks();
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()> 100 && event.clientY < 100) rotationstate = new ObenRechts();
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() > 100 && event.clientY > 100) rotationstate = new UntenRechts();
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()< 100 && event.clientY > 100) rotationstate = new UntenLinks();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() < 100 && event.clientY < 190) rotationstate = new ObenLinks();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()> 100 && event.clientY < 190) rotationstate = new ObenRechts();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() > 100 && event.clientY > 190) rotationstate = new UntenRechts();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()< 100 && event.clientY > 190) rotationstate = new UntenLinks();
         const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
         console.log(rotationstate);
 

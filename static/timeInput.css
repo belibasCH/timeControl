@@ -5,21 +5,23 @@ body {
 
 #rectBar {
     position: absolute;
-    top: 327px;
+    top: 47px;
 }
 #timeLine {
     position: absolute;
-    top: 280px;
+    top: 0;
 }
+
+#wheelWrapper {
+    position: absolute;
+    top: 90px;
+}
+
 #control {
     background: grey;
     cursor: pointer;
 }
-/*#wheel{*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    cursor: pointer;*/
-/*}*/
+
 
 .stroke-animation {
     stroke-dasharray: 700;
