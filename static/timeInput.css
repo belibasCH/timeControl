@@ -15,10 +15,11 @@ body {
     background: grey;
     cursor: pointer;
 }
-#wheel{
-    position: absolute;
-    top: 0;
-}
+/*#wheel{*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .stroke-animation {
     stroke-dasharray: 700;

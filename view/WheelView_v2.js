@@ -1,7 +1,18 @@
-const WheelView_v2 = (timeInputController, wheelSVG) => {
-
+const WheelView_v2 = (timeInputController, wheelWrapper) => {
     const svgSize = timeInputController.getWheelsize();
-    const realSize = 400; // Base size for scaling
+    const realSize = 200; // Base size for scaling
+
+    wheelWrapper.setAttribute("width", timeInputController.getTimeLineLength());
+    wheelWrapper.setAttribute("height", svgSize);
+
+
+    const wheelSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    wheelSVG.setAttribute("id", "wheel");
+    wheelSVG.setAttribute("x", (timeInputController.getStart() + timeInputController.getDuration/2 - timeInputController.getWheelsize()/2).toString());
+    wheelSVG.setAttribute("y", "0"); // Y position
+    wheelSVG.setAttribute("fill", "blue"); // Fill color
+
+    wheelWrapper.appendChild(wheelSVG);
 
     const scaleValue = (value) => {
         return value * realSize / 113; // Scale according to realSize
@@ -17,30 +28,37 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
     minutes = Math.round(minutes);
     let durationText;
 
+    const outerGroup = getOuterGroup(scaleValue);
+
+    const innerGroup = getInnerGroup(scaleValue);
+
     const update = () => {
-        wheelSVG.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+        outerGroup.setAttribute("transform-origin", "center center")   ;
+        outerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+
+        innerGroup.setAttribute("transform-origin", "center center")   ;
+        innerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+
+        wheelSVG.setAttribute("x", (timeInputController.getStart() + timeInputController.getDuration()/2 - timeInputController.getWheelsize()/2).toString());
         duration = timeInputController.getDuration();
         hours = Math.floor(duration / 60);
         minutes = duration % 60;
         updateDurationText(hours, minutes);
-        updateTextRotation();
     };
 
     timeInputController.onStartChanged(update);
     timeInputController.onDurationChanged(update);
 
-    (() => {
 
-        wheelSVG.setAttribute("x", "0");
         wheelSVG.setAttribute("y", "0");
         wheelSVG.setAttribute("width", `${svgSize}`);
         wheelSVG.setAttribute("height", `${svgSize}`);
-        wheelSVG.setAttribute("viewBox", `0 0 ${realSize} ${realSize}`);
+        wheelSVG.setAttribute("viewbox", `0 0 ${realSize} ${realSize}`);
 
         wheelSVG.appendChild(getDarkShadowFilter());
         wheelSVG.appendChild(getBrightShadowFilter());
 
-        const outerGroup = getOuterGroup(scaleValue);
+
 
         outerGroup.appendChild(getDarkShadowShape(scaleValue));
 
@@ -48,7 +66,7 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
 
         wheelSVG.appendChild(outerGroup);
 
-        const innerGroup = getInnerGroup(scaleValue);
+
 
         innerGroup.appendChild(getInnerCircleShadowFilter(scaleValue));
 
@@ -63,7 +81,6 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
         durationText.setAttribute("fill", "#fff"); // Color of the text
         durationText.setAttribute("font-family", "Arial"); // Specify Montserrat as the font-family
 
-        durationText.setAttribute("transform", `rotate(-${initialDuration} ${scaleValue(56.4996)} ${scaleValue(56.5001)})`);
 
         initialDuration = timeInputController.getDuration();
         updateDurationText(Math.floor(initialDuration / 60), initialDuration % 60);
@@ -71,7 +88,7 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
         wheelSVG.appendChild(durationText);
 
         // Create lines
-        var linesData = [
+        const linesData = [
             {x1: "57.15", y1: "15", x2: "57.15", y2: "25"},
             {x1: "57.15", y1: "88", x2: "57.15", y2: "98"},
             {x1: "15.5", y1: "56.35", x2: "25.5", y2: "56.35"},
@@ -98,8 +115,6 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
             {x1: "66.2371", y1: "91.385", x2: "64.9295", y2: "87.3156"}
         ];
 
-
-
         linesData.forEach(lineData => {
             const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", scaleValue(lineData.x1));
@@ -108,10 +123,8 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
             line.setAttribute("y2", scaleValue(lineData.y2));
             line.setAttribute("stroke", "black");
             line.setAttribute("stroke-width", scaleValue(lineData.strokeWidth));
-            wheelSVG.appendChild(line);
+            outerGroup.appendChild(line);
         });
-
-    })();
 
     function updateDurationText(hours, minutes) {
         if (durationText) {
@@ -123,30 +136,21 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
         }
     }
 
-    function updateTextRotation() {
-        if (durationText) {
-            durationText.setAttribute("transform", `rotate(-${duration} ${scaleValue(56.4996)} ${scaleValue(56.5001)})`);
-        }
-    }
-
-
-    //IIFE to add the event listeners
-    (() => {
-        const startRotation = event => {
+            const startRotation = event => {
             timeInputController.setStartPositions(event);
-            wheelSVG.addEventListener("mousemove", updateWheelRotation);
-            wheelSVG.addEventListener("touchmove", updateWheelRotation);
+            wheelSVG.addEventListener("mousemove", updateDragRotation);
+            wheelSVG.addEventListener("touchmove", updateDragRotation);
             wheelSVG.addEventListener("mouseup", stopRotation);
             wheelSVG.addEventListener("mouseleave", stopRotation);
             wheelSVG.addEventListener("touchend", stopRotation);
 
         };
-        const updateWheelRotation = event => {
+        const updateDragRotation = event => {
             timeInputController.updateDuration(event);
         };
         const stopRotation = () => {
-            wheelSVG.removeEventListener("mousemove", updateWheelRotation);
-            wheelSVG.removeEventListener("touchmove", updateWheelRotation);
+            wheelSVG.removeEventListener("mousemove", updateDragRotation);
+            wheelSVG.removeEventListener("touchmove", updateDragRotation);
             wheelSVG.removeEventListener("mouseup", stopRotation);
             wheelSVG.removeEventListener("mouseleave", stopRotation);
             wheelSVG.removeEventListener("touchend", stopRotation);
@@ -155,13 +159,9 @@ const WheelView_v2 = (timeInputController, wheelSVG) => {
         wheelSVG.addEventListener("mousedown", startRotation);
         wheelSVG.addEventListener("touchstart", startRotation);
         wheelSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
-
-    })();
-
-
 };
 
-function getDarkShadowFilter() {
+const getDarkShadowFilter = ()=> {
 // Create a reusable inner shadow filter for the dark shadow
     const darkShadowFilter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
     darkShadowFilter.setAttribute("id", "darkInnerShadowFilter");
@@ -179,7 +179,7 @@ function getDarkShadowFilter() {
     return darkShadowFilter;
 }
 
-function getBrightShadowFilter() {
+const getBrightShadowFilter = ()=> {
     const brightShadowFilter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
     brightShadowFilter.setAttribute("id", "brightInnerShadowFilter");
 
@@ -196,7 +196,7 @@ function getBrightShadowFilter() {
     return brightShadowFilter
 }
 
-function getInnerCircleShadowFilter() {
+const getInnerCircleShadowFilter = ()=> {
     const filter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
     filter.setAttribute("id", "innerCircleShadowFilter");
 
@@ -212,7 +212,7 @@ function getInnerCircleShadowFilter() {
     return filter;
 }
 
-function getOuterGroup(scaleValue) {
+const getOuterGroup = scaleValue => {
     // Create a group for the outer circle and its shadows
     const outerGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
@@ -228,7 +228,7 @@ function getOuterGroup(scaleValue) {
     return outerGroup;
 }
 
-function getInnerGroup(scaleValue) {
+const getInnerGroup = scaleValue => {
     // Create the inner group
     const innerGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
@@ -256,7 +256,7 @@ function getInnerGroup(scaleValue) {
     return innerGroup;
 }
 
-function getDarkShadowShape(scaleValue) {
+const getDarkShadowShape = scaleValue => {
     // Create a dark shadow shape for the inner shadow
     const darkShadowShape = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     darkShadowShape.setAttribute("cx", scaleValue(56.5));
@@ -269,7 +269,7 @@ function getDarkShadowShape(scaleValue) {
     return darkShadowShape;
 }
 
-function getBrightShadowShape(scaleValue) {
+const getBrightShadowShape= scaleValue => {
     // Create a bright shadow shape for the inner shadow
     const brightShadowShape = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     brightShadowShape.setAttribute("cx", scaleValue(56.5));

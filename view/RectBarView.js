@@ -1,7 +1,7 @@
 
 const RectBarView = (timeInputController, barElement) => {
     const barHeight = 27;
-    const width = timeInputController.getWidth();
+    const width = timeInputController.getTimeLineLength();
     barElement.setAttribute("viewBox", `0 0 750 120`);
     barElement.setAttribute("width", width);
     barElement.setAttribute("height", "120");

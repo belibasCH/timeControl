@@ -12,7 +12,7 @@
     <p id="details"></p>
     <svg id="timeLine"></svg>
     <svg id="rectBar"></svg>
-    <svg id="wheel"></svg>
+    <svg id="wheelWrapper"></svg>
 
 </main>
 
@@ -27,7 +27,7 @@
 
 <script>
     const timeInputController = TimeInputController();
-    WheelView_v2(timeInputController, document.getElementById('wheel'));
+    WheelView_v2(timeInputController, document.getElementById('wheelWrapper'));
     DetailView(timeInputController, document.getElementById('details'));
     TimeLineView(timeInputController, document.getElementById('timeLine'));
     RectBarView(timeInputController, document.getElementById('rectBar'));

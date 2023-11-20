@@ -1,23 +1,21 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
+    // Model
+    const duration = Observable(200);
+    const start = Observable(100);
 
-    const width = Observable(750);
+    //Wheel
+    const wheelSize = Observable(200);
+
+    //Timeline
     const ticks = Observable(5);
     const timeLineLength = Observable(750);
     const startHour = Observable(6);
-    // Model
-    const duration = Observable(100);
-    const start = Observable(0);
-    const wheelsize = Observable(200);
-    const wheelposition = Observable({x: 0, y: 0});
 
     // Temporary variables for dragging
     let startDragPointX = 0;
     let startDragPointY = 0;
 
-
-    //Calculates the end of the meeting
-    const calculateEnd = () => start.getValue() + duration.getValue();
 
     //Sets the start positions for dragging - temporary variables
     const setStartPositions = mousePosition => {
@@ -29,11 +27,12 @@ const TimeInputController = () => {
     const updateDuration = event => {
         let rotationstate = new ObenLinks();
         console.log("x: "+event.clientX);
-        if (event.clientX < 100 && event.clientY < 100) rotationstate = new ObenLinks()
-        if (event.clientX > 100 && event.clientY < 100) rotationstate = new ObenRechts()
-        if (event.clientX > 100 && event.clientY > 100) rotationstate = new UntenRechts()
-        if (event.clientX < 100 && event.clientY > 100) rotationstate = new UntenLinks()
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() < 100 && event.clientY < 100) rotationstate = new ObenLinks();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()> 100 && event.clientY < 100) rotationstate = new ObenRechts();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() > 100 && event.clientY > 100) rotationstate = new UntenRechts();
+        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()< 100 && event.clientY > 100) rotationstate = new UntenLinks();
         const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
+        console.log(rotationstate);
 
         startDragPointY = event.clientY;
         startDragPointX = event.clientX;
@@ -50,10 +49,10 @@ const TimeInputController = () => {
     };
 
     const updateStart  = (event)=> {
-        const distance = event.clientX - startDragPointX;
+        const distance = event.clientX  - startDragPointX;
         const newStart = start.getValue() + distance;
         start.setValue(newStart);
-        startDragPointX = event.clientX;
+        startDragPointX = event.clientX ;
     };
 
     return {
@@ -63,13 +62,12 @@ const TimeInputController = () => {
         getStart: start.getValue,
         setStart: start.setValue,
         onStartChanged: start.onChange,
-        getWidth: width.getValue,
+        getWidth: wheelSize.getValue,
         getTicks: ticks.getValue,
         getTimeLineLength: timeLineLength.getValue,
         getStartHour: startHour.getValue,
-        getWheelsize: wheelsize.getValue,
-        setWheelsize: wheelsize.setValue,
-        calculateEnd: calculateEnd,
+        getWheelsize: wheelSize.getValue,
+        setWheelsize: wheelSize.setValue,
         setStartPositions: setStartPositions,
         updateDuration: updateDuration,
         updateWheelRotation: updateWheelRotation,

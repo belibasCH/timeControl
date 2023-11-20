@@ -75,19 +75,22 @@ const WheelView = (timeInputController, wheelSVG) => {
     (() => {
         const startRotation = event => {
             timeInputController.setStartPositions(event);
-            wheelSVG.addEventListener("mousemove", updateWheelRotation);
-            wheelSVG.addEventListener("touchmove", updateWheelRotation);
+            wheelSVG.addEventListener("mousemove", updateDragRotation);
+            wheelSVG.addEventListener("touchmove", updateDragRotation);
             wheelSVG.addEventListener("mouseup", stopRotation);
             wheelSVG.addEventListener("mouseleave", stopRotation);
             wheelSVG.addEventListener("touchend", stopRotation);
 
         };
-        const updateWheelRotation = event => {
+        const updateDragRotation = event => {
             timeInputController.updateDuration(event);
         };
+        const updateWheelRotation = event => {
+            timeInputController.updateWheelRotation(event);
+        };
         const stopRotation = () => {
-            wheelSVG.removeEventListener("mousemove", updateWheelRotation);
-            wheelSVG.removeEventListener("touchmove", updateWheelRotation);
+            wheelSVG.removeEventListener("mousemove", updateDragRotation);
+            wheelSVG.removeEventListener("touchmove", updateDragRotation);
             wheelSVG.removeEventListener("mouseup", stopRotation);
             wheelSVG.removeEventListener("mouseleave", stopRotation);
             wheelSVG.removeEventListener("touchend", stopRotation);

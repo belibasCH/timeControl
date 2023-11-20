@@ -1,6 +1,6 @@
 
 const TimeLineView = (timeInputController, lineElement) => {
-    const width = timeInputController.getWidth();
+    const width = timeInputController.getTimeLineLength();
 
     lineElement.setAttribute("viewBox", `0 0 750 60`);
     lineElement.setAttribute("width", `${width}`);
