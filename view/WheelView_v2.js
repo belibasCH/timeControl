@@ -46,11 +46,10 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
 
     const update = () => {
         outerGroup.setAttribute("transform-origin", "center center")   ;
-        outerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
+        outerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration()*6 + ")");
 
         innerGroup.setAttribute("transform-origin", "center center")   ;
-        innerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration() + ")");
-
+        innerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration()*6 + ")");
 
         tick.setAttribute("x", getMiddle().toString());
         tick.setAttribute("points", getMiddle()+5+",0 "+getMiddle()+",20 "+(getMiddle()+10)+",20");
@@ -79,8 +78,6 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
         outerGroup.appendChild(getBrightShadowShape(scaleValue));
 
         wheelSVG.appendChild(outerGroup);
-
-
 
         innerGroup.appendChild(getInnerCircleShadowFilter(scaleValue));
 
@@ -151,7 +148,6 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
     }
 
             const startRotation = event => {
-            timeInputController.setStartPositions(event);
             wheelSVG.addEventListener("mousemove", updateDragRotation);
             wheelSVG.addEventListener("touchmove", updateDragRotation);
             wheelSVG.addEventListener("mouseup", stopRotation);

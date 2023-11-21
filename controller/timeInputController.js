@@ -1,7 +1,7 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
     // Model
-    const duration = Observable(20);
+    const duration = Observable(0);
     const start = Observable(100);
 
     //Wheel
@@ -16,8 +16,6 @@ const TimeInputController = () => {
     let startDragPointX = 0;
     let startDragPointY = 0;
 
-    let startangle = duration.getValue()*6;
-
 
     //Sets the start positions for dragging - temporary variables
     const setStartPositions = mousePosition => {
@@ -25,35 +23,46 @@ const TimeInputController = () => {
         startDragPointY = mousePosition.clientY;
     };
 
+    let startangle = 0;
     //Updates the duration of the meeting on mousemove
     const updateDuration = event => {
 
-
         const relativeX = event.offsetX; // selection position via mouse or touch where 0,0 is the canvas top left corner
         const relativeY = event.offsetY;
-        // normalize into cartesian coords where 0,0 is at the center of a unit circle
+
         const y = 2 * (((wheelSize.getValue() / 2) - relativeY) / wheelSize.getValue());
         const x = 2 * (relativeX / wheelSize.getValue() - 0.5);
 
         let angle = Math.atan2(y, x) ;
 
-        angle += Math.PI / 2;
+        angle -= Math.PI / 2;
 
         if (angle < 0) {
             angle += 2 * Math.PI;
         }
 
         let angleDegrees = angle * 180 / Math.PI;
-        console.log("angledegre: "+angleDegrees);
-        console.log("start: "+angleDegrees);
-        if (angleDegrees < 0) {
-            angleDegrees += 360;
+        angleDegrees = 360 - angleDegrees;
+
+
+        console.log("angledegre: "+ angleDegrees);
+        console.log("start: "+ startangle);
+        let diff = (angleDegrees - startangle);
+        if (diff < -300) {
+            startangle += -359;
+            diff = 0;
         }
-        duration.setValue(duration.getValue() + startangle -angleDegrees);
+        if (diff > 300) {
+            startangle += 359;
+            diff = 0;
+        }
+        console.log("diff: "+diff);
+        console.log("new duration: "+  (duration.getValue()*6 + diff)/6);
 
-        console.log("diff: "+(startangle - angleDegrees));
-        startangle = angleDegrees;
 
+        duration.setValue((duration.getValue()*6 + diff)/6);
+
+        startangle += diff;
 
 
 
