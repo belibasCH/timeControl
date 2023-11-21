@@ -25,20 +25,24 @@ const TimeInputController = () => {
 
     //Updates the duration of the meeting on mousemove
     const updateDuration = event => {
-        let rotationstate = new ObenLinks();
-        console.log("x: "+event.clientX);
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() < 100 && event.clientY < 190) rotationstate = new ObenLinks();
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()> 100 && event.clientY < 190) rotationstate = new ObenRechts();
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue() > 100 && event.clientY > 190) rotationstate = new UntenRechts();
-        if (event.clientX + wheelSize.getValue()/2 - duration.getValue()/2 - start.getValue()< 100 && event.clientY > 190) rotationstate = new UntenLinks();
-        const newRotation = rotationstate.rotate(event, startDragPointX, startDragPointY);
-        console.log(rotationstate);
 
-        startDragPointY = event.clientY;
-        startDragPointX = event.clientX;
 
-        duration.setValue(duration.getValue() + newRotation);
-        start.setValue(start.getValue() - newRotation/2);
+        const relativeX = event.offsetX; // selection position via mouse or touch where 0,0 is the canvas top left corner
+        const relativeY = event.offsetY;
+        // normalize into cartesian coords where 0,0 is at the center of a unit circle
+        const y = 2 * (((wheelSize.getValue() / 2) - relativeY) / wheelSize.getValue());
+        const x = 2 * (relativeX / wheelSize.getValue() - 0.5);
+
+        let angle = Math.atan2(y, x) ;
+
+        angle += Math.PI / 2;
+
+        if (angle < 0) {
+            angle += 2 * Math.PI;
+        }
+        let angleDegrees = angle * 180 / Math.PI;
+
+        duration.setValue(-angleDegrees);
 
     };
 
