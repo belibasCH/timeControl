@@ -1,7 +1,7 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
     // Model
-    const duration = Observable(200);
+    const duration = Observable(20);
     const start = Observable(100);
 
     //Wheel
@@ -15,6 +15,8 @@ const TimeInputController = () => {
     // Temporary variables for dragging
     let startDragPointX = 0;
     let startDragPointY = 0;
+
+    let startangle = duration.getValue()*6;
 
 
     //Sets the start positions for dragging - temporary variables
@@ -40,9 +42,20 @@ const TimeInputController = () => {
         if (angle < 0) {
             angle += 2 * Math.PI;
         }
-        let angleDegrees = angle * 180 / Math.PI;
 
-        duration.setValue(-angleDegrees);
+        let angleDegrees = angle * 180 / Math.PI;
+        console.log("angledegre: "+angleDegrees);
+        console.log("start: "+angleDegrees);
+        if (angleDegrees < 0) {
+            angleDegrees += 360;
+        }
+        duration.setValue(duration.getValue() + startangle -angleDegrees);
+
+        console.log("diff: "+(startangle - angleDegrees));
+        startangle = angleDegrees;
+
+
+
 
     };
 
