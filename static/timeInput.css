@@ -3,25 +3,27 @@ body {
     margin: 0;
 }
 
-#rectBar {
+.rectBar {
     position: absolute;
     top: 47px;
 }
-#timeLine {
+.timeline {
     position: absolute;
     top: 0;
 }
 
-#wheelWrapper {
+.wheelWrapper {
     position: absolute;
-    top: 0px;
+    top: 100px;
 }
 
 #control {
     background: grey;
     cursor: pointer;
 }
-
+#draghandler {
+    cursor: pointer;
+}
 
 .stroke-animation {
     stroke-dasharray: 700;

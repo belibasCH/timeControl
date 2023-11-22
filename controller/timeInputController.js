@@ -1,8 +1,8 @@
 // requires ../observable/observable.js
 const TimeInputController = () => {
     // Model
-    const duration = Observable(0);
-    const start = Observable(100);
+    const duration = Observable(60);
+    const start = Observable(200);
 
     //Wheel
     const wheelSize = Observable(200);
@@ -25,11 +25,7 @@ const TimeInputController = () => {
 
     let startangle = 0;
     //Updates the duration of the meeting on mousemove
-    const updateDuration = event => {
-
-        const relativeX = event.offsetX; // selection position via mouse or touch where 0,0 is the canvas top left corner
-        const relativeY = event.offsetY;
-
+    const updateDuration = (relativeX, relativeY) => {
         const y = 2 * (((wheelSize.getValue() / 2) - relativeY) / wheelSize.getValue());
         const x = 2 * (relativeX / wheelSize.getValue() - 0.5);
 
@@ -43,10 +39,7 @@ const TimeInputController = () => {
 
         let angleDegrees = angle * 180 / Math.PI;
         angleDegrees = 360 - angleDegrees;
-
-
-        console.log("angledegre: "+ angleDegrees);
-        console.log("start: "+ startangle);
+        
         let diff = (angleDegrees - startangle);
         if (diff < -300) {
             startangle += -359;
@@ -56,12 +49,9 @@ const TimeInputController = () => {
             startangle += 359;
             diff = 0;
         }
-        console.log("diff: "+diff);
-        console.log("new duration: "+  (duration.getValue()*6 + diff)/6);
-
-
+        console.log("differenzen:" + relativeX, relativeY);
         duration.setValue((duration.getValue()*6 + diff)/6);
-
+        start.setValue((start.getValue()*6 - diff/2)/6);
         startangle += diff;
 
 

@@ -1,30 +1,46 @@
-const WheelView_v2 = (timeInputController, wheelWrapper) => {
+const WheelView = (timeInputController, wheelWrapper) => {
     const svgSize = timeInputController.getWheelsize();
     const realSize = 200; // Base size for scaling
 
     wheelWrapper.setAttribute("width", timeInputController.getTimeLineLength());
     wheelWrapper.setAttribute("height", svgSize);
 
-    const getMiddle = () => {
-        return timeInputController.getStart() + timeInputController.getDuration()/2
-    }
+    const getWheelMiddle = () => timeInputController.getStart() + timeInputController.getDuration()/2;
+    const getWheelStart = () => timeInputController.getStart() + timeInputController.getDuration()/2 - timeInputController.getWheelsize()/2;
+
 
     const tick = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    tick.setAttribute("x", getMiddle().toString());
+    tick.setAttribute("x", getWheelMiddle().toString());
     tick.setAttribute("y", "0");
-    tick.setAttribute("points", getMiddle()+5+",0 "+getMiddle()+",20 "+(getMiddle()+10)+",20");
+    tick.setAttribute("points", getWheelMiddle()+5+",0 "+getWheelMiddle()+",20 "+(getWheelMiddle()+10)+",20");
     tick.setAttribute("fill", "#6083FC");
     wheelWrapper.appendChild(tick);
 
-
-
     const wheelSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     wheelSVG.setAttribute("id", "wheel");
-    wheelSVG.setAttribute("x", "0");
+    wheelSVG.setAttribute("x", timeInputController.getStart());
     wheelSVG.setAttribute("y", "0"); // Y position
     wheelSVG.setAttribute("fill", "blue"); // Fill color
 
     wheelWrapper.appendChild(wheelSVG);
+
+    const dragHandler = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    dragHandler.setAttribute("id", "draghandler");
+    dragHandler.setAttribute("width", timeInputController.getWheelsize());
+    dragHandler.setAttribute("height", timeInputController.getWheelsize());
+    dragHandler.setAttribute("x", getWheelStart());
+    dragHandler.setAttribute("y", "0"); // Y position
+    dragHandler.setAttribute("fill", "red"); // Fill color
+    dragHandler.setAttribute("viewBox", `0 0 ${timeInputController.getWheelsize()} ${timeInputController.getWheelsize()}`);
+
+    wheelWrapper.appendChild(dragHandler);
+
+    const handlerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    handlerRect.setAttribute("height", timeInputController.getWheelsize());
+    handlerRect.setAttribute("width", timeInputController.getWheelsize());
+    handlerRect.setAttribute("opacity", "0"); // Fill color
+
+    dragHandler.appendChild(handlerRect);
 
     const scaleValue = (value) => {
         return value * realSize / 113; // Scale according to realSize
@@ -51,8 +67,12 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
         innerGroup.setAttribute("transform-origin", "center center")   ;
         innerGroup.setAttribute("transform", "rotate(" + timeInputController.getDuration()*6 + ")");
 
-        tick.setAttribute("x", getMiddle().toString());
-        tick.setAttribute("points", getMiddle()+5+",0 "+getMiddle()+",20 "+(getMiddle()+10)+",20");
+        tick.setAttribute("x", getWheelMiddle().toString());
+        tick.setAttribute("points", getWheelMiddle()+5+",0 "+getWheelMiddle()+",20 "+(getWheelMiddle()+10)+",20");
+
+        wheelSVG.setAttribute("x", getWheelStart());
+
+        dragHandler.setAttribute("x", getWheelStart());
 
         duration = timeInputController.getDuration();
         hours = Math.floor(duration / 60);
@@ -148,27 +168,30 @@ const WheelView_v2 = (timeInputController, wheelWrapper) => {
     }
 
             const startRotation = event => {
-            wheelSVG.addEventListener("mousemove", updateDragRotation);
-            wheelSVG.addEventListener("touchmove", updateDragRotation);
-            wheelSVG.addEventListener("mouseup", stopRotation);
-            wheelSVG.addEventListener("mouseleave", stopRotation);
-            wheelSVG.addEventListener("touchend", stopRotation);
+                draghandler.addEventListener("mousemove", updateDragRotation);
+                draghandler.addEventListener("touchmove", updateDragRotation);
+                draghandler.addEventListener("mouseup", stopRotation);
+                draghandler.addEventListener("mouseleave", stopRotation);
+                draghandler.addEventListener("touchend", stopRotation);
 
         };
         const updateDragRotation = event => {
-            timeInputController.updateDuration(event);
+            const wheelPosLeft = dragHandler.getBoundingClientRect().left;
+            const wheelPosTop = dragHandler.getBoundingClientRect().top;
+            console.log("wheelpos:"+wheelPosLeft, wheelPosTop);
+            timeInputController.updateDuration(event.clientX - wheelPosLeft, event.clientY - wheelPosTop);
         };
         const stopRotation = () => {
-            wheelSVG.removeEventListener("mousemove", updateDragRotation);
-            wheelSVG.removeEventListener("touchmove", updateDragRotation);
-            wheelSVG.removeEventListener("mouseup", stopRotation);
-            wheelSVG.removeEventListener("mouseleave", stopRotation);
-            wheelSVG.removeEventListener("touchend", stopRotation);
+            draghandler.removeEventListener("mousemove", updateDragRotation);
+            draghandler.removeEventListener("touchmove", updateDragRotation);
+            draghandler.removeEventListener("mouseup", stopRotation);
+            draghandler.removeEventListener("mouseleave", stopRotation);
+            draghandler.removeEventListener("touchend", stopRotation);
         };
 
-        wheelSVG.addEventListener("mousedown", startRotation);
-        wheelSVG.addEventListener("touchstart", startRotation);
-        wheelSVG.addEventListener("wheel", timeInputController.updateWheelRotation);
+    draghandler.addEventListener("mousedown", startRotation);
+    draghandler.addEventListener("touchstart", startRotation);
+    draghandler.addEventListener("wheel", timeInputController.updateWheelRotation);
 };
 
 const getDarkShadowFilter = ()=> {

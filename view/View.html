@@ -8,27 +8,24 @@
 <body>
 
 <main>
-
-    <p id="details"></p>
-    <svg id="timeLine"></svg>
-    <svg id="rectBar"></svg>
-    <svg id="wheelWrapper"></svg>
-
+    <div style="position: relative">
+        <svg id="timeLine"      class="timeline"></svg>
+        <svg id="rectBar"       class="rectBar"></svg>
+        <svg id="wheelWrapper"  class="wheelWrapper"></svg>
+    </div>
 </main>
 
 <script src="Constants.js"></script>
 <script src="../observable/observable.js"></script>
 <script src="../controller/timeInputController.js"></script>
-<script src="DetailView.js"></script>
-<script src="WheelView_v2.js"></script>
+<script src="WheelView.js"></script>
 <script src="RectBarView.js"></script>
 <script src="TimeLineView.js"></script>
 <script src="../states/ControlStates.js"></script>
 
 <script>
     const timeInputController = TimeInputController();
-    WheelView_v2(timeInputController, document.getElementById('wheelWrapper'));
-    DetailView(timeInputController, document.getElementById('details'));
+    WheelView(timeInputController, document.getElementById('wheelWrapper'));
     TimeLineView(timeInputController, document.getElementById('timeLine'));
     RectBarView(timeInputController, document.getElementById('rectBar'));
 </script>
